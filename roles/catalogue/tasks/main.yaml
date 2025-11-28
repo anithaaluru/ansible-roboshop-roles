@@ -1,46 +1,11 @@
-- name: disabling nodejs
-  ansible.builtin.command: dnf module disable nodejs -y
-- name: enable nodejs
-  ansible.builtin.command: dnf module disable nodejs:20 -y
-- name: installing nodejs
-  ansible.builtin.dnf:
-    name: nodejs 
-    state: present
-- name: creating user
-  ansible.builtin.user:
-    name: roboshop
-    shell: /sbin/nologin
-    home: /app
-- name: creating app folder
-  ansible.builtin.file:
-    path: /app
-    state: directory
-- name: downloading the content
-  ansible.builtin.get_url:
-    url: https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip 
-    dest: /tmp/catalogue.zip
-- name: extracting a file 
-  ansible.builtin.unarchive:
-      src: /tmp/catalogue.zip
-      dest: /app
-      remote_src: yes    #means that already file exists in catalogue server
-
-- name: installing dependencies
-  community.general.npm:
-    path: /app
-    state: present
-- name: copy catalogue service
-  ansible.builtin.copy:
-    src: catalogue.service
-    dest: /etc/systemd/system/catalogue.service
-- name: systemctl daemon reload
-  ansible.builtin.systemd_service:
-    daemon_reload: true
-- name: start and enable service
-  ansible.builtin.service:
-    name: catalogue
-    state: started
-    enabled: yes
+- name: app-setup
+  include_role:
+   name: common
+   tasks_from: app-setup
+- name: package
+  include_role:
+   name: common
+   tasks_from: nodejs
 - name: copy mongod repo
   ansible.builtin.copy:
     src: mongo.repo
@@ -61,6 +26,11 @@
 - name: load the products
   ansible.builtin.shell: mongosh --host 172.31.70.137 </app/db/master-data.js
   when: catalogue_output.stdout | int < 0
+- name: system service
+  include_role:
+   name: common
+   tasks_from: systemd
+ 
 
 
     
