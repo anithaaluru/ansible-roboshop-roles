@@ -1,3 +1,12 @@
+  - name: app-setup
+    include_role:
+      name: common
+      tasks_from: app-setup.yaml
+  - name: nodejs package
+    include_role:
+      name: common
+      tasks_from: nodejs.yaml
+
   -  name: copy mongod repo
      ansible.builtin.copy:
       src: mongo.repo
@@ -18,6 +27,11 @@
   - name: load the products
     ansible.builtin.shell: mongosh --host 172.31.66.86 </app/db/master-data.js
     when: catalogue_output.stdout | int < 0
+
+  - name: systemctl services
+    include_role:
+      name: common
+      tasks_from: systemd.yaml
 
 
      
