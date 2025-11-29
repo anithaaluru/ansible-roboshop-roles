@@ -10,10 +10,10 @@
 
 - name: downloading the content
   ansible.builtin.get_url:
-    url: https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip 
-    dest: /tmp/catalogue.zip
+    url: https://roboshop-artifacts.s3.amazonaws.com/{{ component }}-v3.zip 
+    dest: /tmp/{{ component }}.zip
 - name: extracting a file 
   ansible.builtin.unarchive:
-      src: /tmp/catalogue.zip
+      src: /tmp/{{ component }}.zip
       dest: /app
       remote_src: yes    
