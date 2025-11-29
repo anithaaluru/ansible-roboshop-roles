@@ -1,36 +1,5 @@
-- name: app-setup
-  include_role:
-   name: common
-   tasks_from: app-setup.yaml
-- name: package
-  include_role:
-   name: common
-   tasks_from: nodejs.yaml
-- name: copy mongod repo
-  ansible.builtin.copy:
-    src: mongo.repo
-    dest: /etc/yum.repos.d/mongo.repo
-- name: install mongodb client
-  ansible.builtin.dnf:
-    name: mongodb-mongosh
-    state: installed
-
-- name: check products load or not
-  ansible.builtin.shell: mongosh --host 172.31.69.149 --eval 'db.getMongo().getDBNames().indexOf("catalogue")'
-  register: catalogue_output
-
-- name: print the output
-  ansible.builtin.debug:
-    msg: "{{ catalogue_output }}"
-
-- name: load the products
-  ansible.builtin.shell: mongosh --host 172.31.69.149 </app/db/master-data.js
-  when: catalogue_output.stdout | int < 0
-- name: system service
-  include_role:
-   name: common
-   tasks_from: systemd.yaml
- 
-
-
-    
+[mongodb-org-7.0]
+name=MongoDB Repository
+baseurl=https://repo.mongodb.org/yum/redhat/9/mongodb-org/7.0/x86_64/
+enabled=1
+gpgcheck=0
