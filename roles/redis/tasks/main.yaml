@@ -6,7 +6,6 @@
   ansible.builtin.dnf:
     name: redis
     state: installed
-
 - name: remote connections
   ansible.builtin.replace:
   path: /etc/redis/redis.conf
