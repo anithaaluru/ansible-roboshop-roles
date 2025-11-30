@@ -9,12 +9,12 @@
     tasks_from: maven.yaml
 - name: import data
   community.mysql.mysql_db:
-   name: all
-   login_user: "{{ MYSQL_USER }}"
-   login_password: "{{ MYSQL_PASSWORD }}"
-   login_host: "{{ MYSQL_HOST }}"
-   state: import
-   target: "{{ item }}"
+    name: all
+    login_user: "{{ MYSQL_USER }}"
+    login_password: "{{ MYSQL_PASSWORD }}"
+    login_host: "{{ MYSQL_HOST }}"
+    state: import
+    target: "{{ item }}"
   loop:
   - /app/db/schema.sql
   - /app/db/app-user.sql 
