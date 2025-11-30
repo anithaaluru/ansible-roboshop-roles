@@ -11,7 +11,7 @@
   community.mysql.mysql_db:
     name: all
     login_user: root
-    login_password: "{{ MYSQL_PASSWORD }}"
+    login_password: Roboshop@1
     login_host: "{{ MYSQL_HOST }}"
     state: import
     target: "{{ item }}"
